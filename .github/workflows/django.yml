@@ -15,6 +15,16 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
 
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: intro_project_db
+
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -26,6 +36,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install django
         pip install -r requirements.txt
+
+    - name: Run Migrations
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/intro_project_db
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+        
     - name: Run Tests
       run: |
         cd intro_project
