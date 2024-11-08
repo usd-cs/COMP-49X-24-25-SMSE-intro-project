@@ -41,9 +41,10 @@ jobs:
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/intro_project_db
       run: |
+        cd intro_project
         python manage.py makemigrations
         python manage.py migrate
-        
+
     - name: Run Tests
       run: |
         cd intro_project
