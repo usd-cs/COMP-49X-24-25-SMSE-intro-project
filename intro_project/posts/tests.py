@@ -5,6 +5,7 @@ Includes tests for creating and validating the models.
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse
 from .models import Post, Comment
 #from unittest.mock import patch, MagicMock
 
@@ -59,3 +60,49 @@ class CommentModelTest(TestCase):
         self.assertEqual(self.comment.post, self.post)
         self.assertEqual(self.comment.author.username, "testcommenter")
         self.assertIsInstance(self.comment, Comment)
+
+class PostCreateViewTest(TestCase):
+    """
+    Test case for the post creation view.
+    """
+    def setUp(self):
+        """
+        Sets up a test user and the route for testing.
+        """
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.url = reverse("create_post")  # makes sure that the URL name matches whats in the urls.py
+
+    def test_create_post_logged_in(self):
+        """
+        Test creating a post while logged in.
+        """
+        self.client.login(username="testuser", password="password")
+        data = {
+            "title": "Test Post",
+            "content": "This is a test post content while logged in.",
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 201) #201 Created (Successful response)
+        self.assertTrue(Post.objects.filter(title="Test Post").exists())
+
+    def test_create_post_not_logged_in(self):
+        """
+        Test creating a post while not logged in.
+        """
+        data = {
+            "title": "Test Post",
+            "content": "This is a test post content while not logged in.",
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 403) #403 Forbidden (Client error response)
+        self.assertFalse(Post.objects.filter(title="Test Post").exists())
+
+    def test_create_post_missing_data(self):
+        """
+        Test creating a post with missing data fields.
+        """
+        self.client.login(username="testuser", password="password")
+        data = {"title": ""}  # shows missing fields
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 400)  # 400 Bad Request (client error response)
+        self.assertFalse(Post.objects.filter(title="").exists())
