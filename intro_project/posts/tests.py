@@ -1,11 +1,21 @@
+"""
+Test module for the Post and Comment models in the posts app.
+Includes tests for creating and validating the models.
+"""
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Post, Comment
-from unittest.mock import patch, MagicMock
+#from unittest.mock import patch, MagicMock
 
 class PostModelTest(TestCase):
+    """ 
+    Test case for the Post model.
+    """
     def setUp(self):
-        # Tests adding a user for posting
+        """
+        Set up a test user and a post instance for testing.
+        """
         self.user = User.objects.create_user(username="testuser", password="password")
         self.post = Post.objects.create(
             title="Test Creating Post",
@@ -13,29 +23,22 @@ class PostModelTest(TestCase):
             author=self.user
         )
 
-        """     # Tests adding and saving post
-    @patch('posts.models.Post.save')
-    def test_add_post_mock_save(self, mock_save):
-        
-        post = Post.objects.create(
-            title="Mock Save Test",
-            content="Mock post content",
-            author=self.user
-        ) 
-
-        #post.save()
-        
-        # Tests that the save method works
-        mock_save.assert_called_once() """
-
     def test_post_creation(self):
+        """
+        Checks that the Post instance was successfully created.
+        """
         self.assertEqual(self.post.title, "Test Creating Post")
         self.assertEqual(self.post.author.username, "testuser")
         self.assertIsInstance(self.post, Post)
 
 class CommentModelTest(TestCase):
+    """
+    Test case for the Comment model.
+    """
     def setUp(self):
-        # Tests adding a user for commenting
+        """
+        Sets up a test user, post, and a comment instance for testing.
+        """
         self.user = User.objects.create_user(username="testcommenter", password="password")
         self.post = Post.objects.create(
             title="Test Comment",
@@ -49,21 +52,10 @@ class CommentModelTest(TestCase):
         )
 
     def test_comment_creation(self):
+        """
+        Checks that the Comment instance was created successfully.
+        """
         self.assertEqual(self.comment.content, "Test comment content")
         self.assertEqual(self.comment.post, self.post)
         self.assertEqual(self.comment.author.username, "testcommenter")
         self.assertIsInstance(self.comment, Comment)
-
-    """# Tests adding and saving comments
-    @patch('posts.models.Comment.save')
-    def test_add_comment_mock_save(self, mock_save):
-        comment = Comment.objects.create(
-            post=self.post,
-            content="Mock comment content.",
-            author=self.user
-        )
-
-        #comment.save()
-        # Tests that the save method works
-        mock_save.assert_called_once()"""
-
