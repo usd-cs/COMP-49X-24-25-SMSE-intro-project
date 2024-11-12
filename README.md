@@ -13,6 +13,7 @@ Table of Contents:
   8. Load Test Data
   9. URLs
   10. Test Users usernames and passwords
+  11. UI Design
 
 Features:
 
@@ -81,3 +82,5 @@ Test Users
   - username: user3
   - password: password3
 
+UI Design
+  - Figma UI design for the project: https://www.figma.com/design/YVS33HH5t2CeZHXbrviOy6/SMSE-Intro-Project-Design?node-id=2304-963&t=B59YOP0OfzPS1Udq-1
