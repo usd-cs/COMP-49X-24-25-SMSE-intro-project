@@ -5,9 +5,14 @@ Description:
 Table of Contents:
   1. Features
   2. Requirments
-  3. Dependencies:
+  3. Install Dependencies:
   4. Database Setup
-  5. Testing: 
+  5. Run Migrations
+  6. Run Development Server
+  7. Testing:
+  8. Load Test Data
+  9. URLs
+  10. Test Users usernames and passwords
 
 Features:
 
@@ -16,7 +21,11 @@ Requirements:
   - PostgreSQL (latest version)
   - pip
 
-Dependencies:
+Setup: 
+  1. Clone Repository
+  2. cd intro_project
+
+Install Dependencies:
   - pip install -r requirements.txt (installs Django, psycopg2, and other required Python packages)
 
 Database Setup:
@@ -37,13 +46,38 @@ Database Setup:
           }
         }
 
+Run Migrations: 
   5. bash# python manage.py makemigrations (then make sure to set up the database model objects )
   6. bash# python manage.py migrate
   7. python manage.py createsuperuser (made a superuser)
        - username: admin
        - email address: admin@gmail.com
        - password: password
+Run Development Server: 
   8. python manage.py runserver  (runs the app)
 
 Testing:
-python manage.py test  (runs the tests) 
+  python manage.py test  (runs the tests) 
+
+Load Test Data: 
+  - Make sure PostgreSql is running
+  - python manage.py loaddata fixtures/test_data.json
+  - The test data is called test_data.json and is under posts/fixtures
+  - check the admin page to make sure all the users and their posts are there. 
+
+URLs 
+  (http://127.0.0.1:8000/admin/)        directs to the django admin panel
+  (http://127.0.0.1:8000/posts/)       shows a list of all posts
+  /posts/create_post/  should create a new post but not working right now (or need to login first) 
+  /login/         should redirect for non logged in users but not working right now 
+
+Test Users
+  - username: user1
+  - password: password
+
+  - username: adminuser
+  - password: adminpassword
+
+  - username: user3
+  - password: password3
+
