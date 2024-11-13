@@ -83,10 +83,8 @@ class PostCreateViewTest(TestCase):
         """
         Test creating a post while logged in.
         """
-
         user_exists = User.objects.filter(username="testuser").exists()
         self.assertTrue(user_exists, "Test user does not exist in the database")
-
 
         logged_in = self.client.login(username="testuser", password="password")
         self.assertTrue(logged_in, "Login failed for testuser")
@@ -104,6 +102,7 @@ class PostCreateViewTest(TestCase):
 
         #tests if the post was created successfully
         self.assertTrue(Post.objects.filter(content="This is a test post content while logged in.").exists())
+
 
 
     def test_create_post_not_logged_in(self):

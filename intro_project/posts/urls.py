@@ -1,5 +1,7 @@
 """
-Url file
+Url file configuration
+
+Defines the URLs for the app and connects each url to its corresponding view.
 """
 from django.contrib import admin
 from django.urls import path
