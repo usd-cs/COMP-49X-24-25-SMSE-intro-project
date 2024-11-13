@@ -16,6 +16,7 @@ def home(request):
     """
     posts = Post.objects.all()
     #output = "\n".join([f"{post.title}: {post.content} : {post.author} : {post.created_at}" for post in posts])
+    print(posts)
     return render (request, "posts/home.html", {"posts": posts})
     #return HttpResponse(output, content_type="text/plain")
 
