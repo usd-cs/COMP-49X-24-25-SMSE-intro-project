@@ -15,7 +15,7 @@ def home(request):
     Displays the home page with all the posts and comments. If a useris logged in, they can add posts and comments.
     """
     posts = Post.objects.all()
-    output = "\n".join([f"{post.title}: {post.content} : {post.author} : {post.created_at}" for post in posts])
+    #output = "\n".join([f"{post.title}: {post.content} : {post.author} : {post.created_at}" for post in posts])
     return render (request, "posts/home.html", {"posts": posts})
     #return HttpResponse(output, content_type="text/plain")
 
