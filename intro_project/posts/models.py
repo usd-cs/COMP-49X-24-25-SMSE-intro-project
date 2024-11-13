@@ -12,21 +12,16 @@ class Post(models.Model):
     Model representing a blog post.
 
     Attributes:
-        title (str): The title of the post.
         content (str): The content/body of the post.
         author (User): The user who authored the post.
         created_at (datetime): The timestamp when the post was created.
     """
-    title = models.CharField(max_length=255)
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        """
-        Returns a string representation of the post, using its title.
-        """
-        return self.title
+    class Meta:
+        ordering = ['-created_at']
 
 class Comment(models.Model):
     """
@@ -43,8 +38,5 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        """
-        Returns a string representation of the comment, using the author's username.
-        """
-        return f"Comment by {self.author.username} on {self.post.title}"
+    class Meta:
+        ordering = ['created_at']
