@@ -31,8 +31,14 @@ def create_post(request):
         return JsonResponse({"error": "Login is required."}, status=302) #redirects to login page by default
 
     if request.method == 'POST':
+        content = request.POST.get('content', '').strip()
+        if not content:
+            return JsonResponse({
+                "error": "Content cannot be empty"
+            }, status=400)
+
         Post.objects.create(
-            content=request.POST['content'],
+            content=content,
             author=request.user
         )
         return redirect('posts:home')  # Update this
