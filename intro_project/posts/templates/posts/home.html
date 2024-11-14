@@ -12,7 +12,7 @@
 
           <div class="comments">
             <h4>Comments:</h4>
-            {% for comment in post.comment_set.all %}
+            {% for comment in post.comments.all %}
                 <div class="comment">
                     <p>{{ comment.content }}</p>
                     <p>Comment by: {{ comment.author }} at {{ comment.created_at }}</p>
