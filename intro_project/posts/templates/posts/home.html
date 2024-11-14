@@ -23,6 +23,20 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- Create Post Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Create a New Post</h5>
+            <form method="POST" action="{% url 'posts:create_post' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" name="content" rows="3" placeholder="Post something here!!!" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Post</button>
+            </form>
+        </div>
+    </div>
     {% else %}
     <div class="alert alert-warning text-center">
         <strong>Please log in to create posts and comments.</strong>
@@ -34,9 +48,18 @@
     <div class="posts-list">
         {% for post in posts %}
         <div class="card mb-4">
-            <div class="card-header">
-                <h3>{{ post.title }}</h3>
-                <small class="text-muted">Posted by: {{ post.author }} on {{ post.created_at }}</small>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <small class="text-muted">Posted by: {{ post.author }} on {{ post.created_at }}</small>
+                </div>
+                {% if user.is_superuser %}
+                <form method="POST" action="{% url 'posts:delete_post' post.id %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this post?')">
+                        Delete Post
+                    </button>
+                </form>
+                {% endif %}
             </div>
             <div class="card-body">
                 <p class="card-text">{{ post.content }}</p>
@@ -46,9 +69,19 @@
                 {% if post.comments.all %}
                 <ul class="list-group list-group-flush">
                     {% for comment in post.comments.all %}
-                    <li class="list-group-item">
-                        <p>{{ comment.content }}</p>
-                        <small class="text-muted">Comment by: {{ comment.author }} at {{ comment.created_at }}</small>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-1">{{ comment.content }}</p>
+                            <small class="text-muted">Comment by: {{ comment.author }} at {{ comment.created_at }}</small>
+                        </div>
+                        {% if user.is_superuser %}
+                        <form method="POST" action="{% url 'posts:delete_comment' comment.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this comment?')">
+                                Delete Comment
+                            </button>
+                        </form>
+                        {% endif %}
                     </li>
                     {% endfor %}
                 </ul>
