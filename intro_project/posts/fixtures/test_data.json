@@ -3,7 +3,7 @@
         "model": "auth.user",
         "pk": 1,
         "fields": {
-            "username": "user1@sandiego.edu",
+            "username": "user1",
             "email": "user1@sandiego.edu",
             "password": "pbkdf2_sha256$870000$swxKIsDbwPeyITL1IWhwKt$Jczzky4glf1C3MrgvhjCCHNRChl5UHfoGiZiwtnwsUE=",
             "first_name": "User1",
@@ -18,7 +18,7 @@
         "model": "auth.user",
         "pk": 2,
         "fields": {
-            "username": "admin@sandiego.edu",
+            "username": "admin",
             "email": "admin@sandiego.edu",
             "password": "pbkdf2_sha256$870000$5HP3fShRrFlfMHTxNPu7JC$fY3jHSHbQOCThHsR7v3QfslrBUePc2IqkmEvnLVvfco=",
             "first_name": "Admin",
