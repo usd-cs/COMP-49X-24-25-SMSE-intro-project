@@ -16,6 +16,11 @@
         <span>You can create posts and comments!</span>
         {% if user.is_superuser %}
         <p class="mt-2">As an admin, you can also delete posts and comments!</p>
+        <!-- Admin Links -->
+        <div class="mt-4">
+            <a href="/admin/posts/post/" class="btn btn-primary me-2">Manage Posts</a>
+            <a href="/admin/posts/comment/" class="btn btn-secondary">Manage Comments</a>
+        </div>
         {% endif %}
     </div>
     {% else %}
