@@ -136,3 +136,66 @@ class PostCreateViewTest(TestCase):
 
         #tests if the response is a bad request
         self.assertEqual(response.status_code, 400)
+
+class CommentCreateViewTest(TestCase):
+    """
+    Test case for the comment creation view.
+    """
+    def setUp(self):
+        """
+        Sets up test users, a post, and the route for testing.
+        """
+        # Creates two users - one for posting, one for commenting
+        self.post_author = User.objects.create_user(username="postauthor", password="password123")
+        self.comment_author = User.objects.create_user(username="commentauthor", password="password123")
+
+        # Create a test post
+        self.post = Post.objects.create(
+            content="Test post for commenting",
+            author=self.post_author
+        )
+
+        # Set up the comment URL
+        self.url = reverse("posts:create_comment", kwargs={'post_id': self.post.id})
+
+    def test_create_comment_logged_in(self):
+        """
+        Test creating a comment while logged in.
+        """
+        logged_in = self.client.login(username="commentauthor", password="password123")
+        self.assertTrue(logged_in, "Login failed for comment author")
+
+        # Create comment data
+        data = {"content": "This is a test comment.",}
+        response = self.client.post(self.url, data)
+
+        # Tests if the response is redirected to the home page
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('posts:home'))
+
+        # Tests if the comment was created successfully
+        comment_exists = Comment.objects.filter(
+            content="This is a test comment.",
+            author=self.comment_author,
+            post=self.post
+        ).exists()
+        self.assertTrue(comment_exists, "Comment was not created successfully")
+
+    def test_comment_appears_on_post(self):
+        """
+        Test that a comment appears on the correct post.
+        """
+
+        self.client.login(username="commentauthor", password="password123")
+        Comment.objects.create(
+            content="Test comment content",
+            author=self.comment_author,
+            post=self.post
+        )
+
+        response = self.client.get(reverse('posts:home'))
+
+        # tests if the comment appears in the response
+        self.assertContains(response, "Test comment content")
+        self.assertEqual(response.status_code, 200)
+

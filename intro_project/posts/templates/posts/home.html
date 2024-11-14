@@ -6,9 +6,22 @@
   {% if posts %}
   {% for post in posts %}
       <div class="post">
+        <h3>Posts:</h3>
           <p>{{ post.content }}</p>
           <p>Posted by: {{ post.author }}</p>
           <p>Created at: {{ post.created_at }}</p>
+
+          <div class="comments">
+            <h5>Comments:</h5>
+            {% for comment in post.comments.all %}
+                <div class="comment">
+                    <p>{{ comment.content }}</p>
+                    <p>Comment by: {{ comment.author }} at {{ comment.created_at }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+          </div>
       </div>
   {% endfor %}
 {% else %}

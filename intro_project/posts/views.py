@@ -40,4 +40,15 @@ def create_post(request):
             content=content,
             author=request.user
         )
-    return redirect('posts:home')  # Update this
+    return redirect('posts:home')
+
+@login_required
+def create_comment(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        Comment.objects.create(
+            content=request.POST['content'],
+            author=request.user,
+            post=post
+        )
+    return redirect('posts:home')

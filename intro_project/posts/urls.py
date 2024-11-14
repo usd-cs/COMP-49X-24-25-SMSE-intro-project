@@ -13,5 +13,6 @@ app_name = "posts"
 urlpatterns = [
     path('', views.home, name='home'),
     path('create/', views.create_post, name='create_post'),
-    #path('create_posts/', views.create_post, name='create_posts'),
+    path('<int:post_id>/comment/', views.create_comment, name='create_comment'),
+
 ]
