@@ -199,3 +199,42 @@ class CommentCreateViewTest(TestCase):
         self.assertContains(response, "Test comment content")
         self.assertEqual(response.status_code, 200)
 
+class PostDeleteViewTest(TestCase):
+    """
+    Test case for the post deletion view.
+    """
+    def setUp(self):
+        """
+        Sets up a super user and regular user and post object for testing.
+        """
+        self.superuser = User.objects.create_superuser(username="superuser", password="password123")
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.post = Post.objects.create(content="Test post for deletion", author=self.superuser)
+
+    def test_delete_post_superuser(self):
+        """
+        Test deleting a post with a superuser.
+        """
+        self.client.login(username="superuser", password="password123")
+        response = self.client.post(f'/posts/{self.post.id}/delete/')
+
+        self.assertEqual(response.status_code, 302) #redirect
+        self.assertFalse(Post.objects.filter(id=self.post.id).exists())
+
+    def test_delete_post_not_superuser(self):
+        """
+        Test deleting a post with a non-superuser.
+        """
+        self.client.login(username="testuser", password="password123")
+        response = self.client.post(f'/posts/{self.post.id}/delete/')
+        self.assertEqual(response.status_code, 403) #forbidden
+        self.assertTrue(Post.objects.filter(id=self.post.id).exists())
+
+    def test_delete_post_delete_related_comments(self):
+        """
+        Test deleting a post that has related comments.
+        """
+        self.client.login(username="superuser", password="password123")
+        Comment.objects.create(content="Test comment", author=self.superuser, post=self.post)
+        self.client.post(f'/posts/{self.post.id}/delete/')
+        self.assertFalse(Comment.objects.filter(post=self.post).exists()) #checks if the comment was deleted

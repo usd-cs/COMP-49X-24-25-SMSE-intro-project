@@ -2,7 +2,7 @@
 Views File for handling post features in the post app.
 """
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.views import generic
 from django.http import JsonResponse
@@ -44,6 +44,9 @@ def create_post(request):
 
 @login_required
 def create_comment(request, post_id):
+    """
+    Handles creating new comments and allows only logged in users to create a new comment.
+    """
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
         Comment.objects.create(
@@ -52,3 +55,27 @@ def create_comment(request, post_id):
             post=post
         )
     return redirect('posts:home')
+
+@login_required
+def delete_post(request, post_id):
+    """
+    Handles deleting a post and allows only superusers to delete a post.
+    """
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return HttpResponseForbidden("You're not a superuser'.")
+
+    post = get_object_or_404(Post, id=post_id)
+    post.delete()
+    return redirect('posts:home')
+
+@login_required
+def delete_comment(request, comment_id):
+    """
+    Handles deleting a comment and allows only superusers to delete a comment.
+    """
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return HttpResponseForbidden("You're not a superuser")
+    comment = get_object_or_404(Comment, id=comment_id)
+    comment.delete()
+    return redirect('posts:home')
+
