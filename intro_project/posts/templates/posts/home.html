@@ -1,44 +1,68 @@
 {% extends 'posts/base.html' %}
 
 {% block content %}
-  <p>This is the home.html page with all the posts</p>
-
-  {% if user.is_authenticated %}
-    <div>
-      <p>You are logged in as: {{ user.username }}</p>
-      <p>You can create posts and comments!</p>
-      {% if user.is_superuser %}
-        <p>As an admin, you can also delete posts and comments!</p>
-      {% endif %}
+<div class="container mt-5">
+    <!-- Welcome Section -->
+    <div class="text-center mb-4">
+        <h1 class="display-4">All Posts</h1>
+        <p class="lead">Browse posts, create your own, and join the conversation!</p>
     </div>
-  {% else %}
-    <div>
-      <p>Please log in to create posts and comments.</p>
+
+    <!-- User Information -->
+    {% if user.is_authenticated %}
+    <div class="alert alert-info text-center">
+        <strong>You are logged in as: {{ user.username }}</strong>
+        <br>
+        <span>You can create posts and comments!</span>
+        {% if user.is_superuser %}
+        <p class="mt-2">As an admin, you can also delete posts and comments!</p>
+        <!-- Admin Links -->
+        <div class="mt-4">
+            <a href="/admin/posts/post/" class="btn btn-primary me-2">Manage Posts</a>
+            <a href="/admin/posts/comment/" class="btn btn-secondary">Manage Comments</a>
+        </div>
+        {% endif %}
     </div>
-  {% endif %}
+    {% else %}
+    <div class="alert alert-warning text-center">
+        <strong>Please log in to create posts and comments.</strong>
+    </div>
+    {% endif %}
 
-  {% if posts %}
-  {% for post in posts %}
-      <div class="post">
-        <h3>Posts:</h3>
-          <p>{{ post.content }}</p>
-          <p>Posted by: {{ post.author }}</p>
-          <p>Created at: {{ post.created_at }}</p>
-
-          <div class="comments">
-            <h5>Comments:</h5>
-            {% for comment in post.comments.all %}
-                <div class="comment">
-                    <p>{{ comment.content }}</p>
-                    <p>Comment by: {{ comment.author }} at {{ comment.created_at }}</p>
-                </div>
-            {% empty %}
-                <p>No comments yet.</p>
-            {% endfor %}
-          </div>
-      </div>
-  {% endfor %}
-{% else %}
-  <p>No posts available.</p>
-{% endif %}
+    <!-- Posts Section -->
+    {% if posts %}
+    <div class="posts-list">
+        {% for post in posts %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>{{ post.title }}</h3>
+                <small class="text-muted">Posted by: {{ post.author }} on {{ post.created_at }}</small>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ post.content }}</p>
+            </div>
+            <div class="card-footer">
+                <h5>Comments</h5>
+                {% if post.comments.all %}
+                <ul class="list-group list-group-flush">
+                    {% for comment in post.comments.all %}
+                    <li class="list-group-item">
+                        <p>{{ comment.content }}</p>
+                        <small class="text-muted">Comment by: {{ comment.author }} at {{ comment.created_at }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">No comments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-secondary text-center">
+        <p>No posts available.</p>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
