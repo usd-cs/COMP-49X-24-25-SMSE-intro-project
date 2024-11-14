@@ -1,6 +1,6 @@
 # SMSE Team Intro Project
 
-Description:
+Description: The SMSE Intro Project is a web-based blog application that allows users to create posts, comment on existing posts, and engage in discussions. The project aims to provide a simple, user-friendly platform where authenticated users can participate in content creation while ensuring that administrative controls are maintained for content moderation. 
 
 Table of Contents:
   1. Features
