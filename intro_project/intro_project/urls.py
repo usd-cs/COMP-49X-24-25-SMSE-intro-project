@@ -21,8 +21,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='posts/', permanent=True)),  #redirect root to posts
+    path('', RedirectView.as_view(url='posts/', permanent=True)),
     path('posts/', include('posts.urls', namespace='posts')),
-    path('login/', auth_views.LoginView.as_view(template_name='posts/login.html'), name='login'),  # updated template path
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='posts/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='posts:home'), name='logout'),
 ]
