@@ -7,6 +7,8 @@
 <body>
     <div class="container">
         <h1 >This is the base container stuff</h1>
+        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
 
         {% block content %}
         {% endblock %}

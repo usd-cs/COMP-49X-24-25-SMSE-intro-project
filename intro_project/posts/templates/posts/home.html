@@ -3,6 +3,20 @@
 {% block content %}
   <p>This is the home.html page with all the posts</p>
 
+  {% if user.is_authenticated %}
+    <div>
+      <p>You are logged in as: {{ user.username }}</p>
+      <p>You can create posts and comments!</p>
+      {% if user.is_superuser %}
+        <p>As an admin, you can also delete posts and comments!</p>
+      {% endif %}
+    </div>
+  {% else %}
+    <div>
+      <p>Please log in to create posts and comments.</p>
+    </div>
+  {% endif %}
+
   {% if posts %}
   {% for post in posts %}
       <div class="post">
