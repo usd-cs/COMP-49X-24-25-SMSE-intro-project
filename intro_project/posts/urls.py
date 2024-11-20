@@ -5,7 +5,6 @@ Defines the URLs for the app and connects each URL to its corresponding view.
 """
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
 
 app_name = "posts"
 

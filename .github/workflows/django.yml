@@ -36,7 +36,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install django
         pip install -r requirements.txt
-
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        flake8 .
     - name: Run Migrations
       env:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/intro_project_db
@@ -44,7 +47,6 @@ jobs:
         cd intro_project
         python manage.py makemigrations
         python manage.py migrate
-
     - name: Run Tests
       run: |
         cd intro_project
