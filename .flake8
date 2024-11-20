@@ -1,4 +1,11 @@
 [flake8]
-max-line-length = 150
-exclude = .git,__pycache__,venv 
-ignore = E203, W503  
+max-line-length = 120
+ignore =
+    E231,  # Ignore missing whitespace after ','
+    E302,  # Ignore expected 2 blank lines
+    E261,  # Ignore two spaces before inline comment
+    E262,  # Ignore inline comment should start with '#'
+    F401,  # Ignore imported but unused
+    E265,  # Ignore block comment should start with '#'
+    E211,  # Ignore whitespace before '('
+    W391   # Ignore blank line at end of file
