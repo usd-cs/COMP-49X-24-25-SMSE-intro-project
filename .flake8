@@ -1,4 +1,4 @@
 [flake8]
-max-line-length = 200  # Extend the maximum line length to 120 characters
-exclude = .git,__pycache__,venv  # Exclude unnecessary files and directories
-ignore = E203, W503  # Ignore specific warnings
+max-line-length = 150
+exclude = .git,__pycache__,venv 
+ignore = E203, W503  
