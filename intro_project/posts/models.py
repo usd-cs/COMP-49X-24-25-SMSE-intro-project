@@ -7,6 +7,7 @@ Defines the `Post` and `Comment` models.
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Post(models.Model):
     """
     Model representing a blog post.
@@ -22,6 +23,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
 
 class Comment(models.Model):
     """

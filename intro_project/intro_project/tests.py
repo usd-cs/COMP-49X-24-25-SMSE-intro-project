@@ -3,12 +3,14 @@ Just a sample test module.
 """
 from django.test import TestCase
 
+
 class SampleTest(TestCase):
     """
-    Test case for a sample. 
+    Test case for a sample.
     """
+
     def test_sample(self):
         """
-        Sample test. 
+        Sample test.
         """
-        self.assertEqual(1+1,2)
+        self.assertEqual(1 + 1, 2)

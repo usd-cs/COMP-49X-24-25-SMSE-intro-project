@@ -8,11 +8,11 @@ from django.contrib.auth.models import User
 from unittest import skip
 from django.urls import reverse
 from .models import Post, Comment
-#from unittest.mock import patch, MagicMock
+# from unittest.mock import patch, MagicMock
 
 
 class PostModelTest(TestCase):
-    """ 
+    """
     Test case for the Post model.
     """
     @skip("Skipping this test temporarily.")
@@ -68,10 +68,12 @@ class CommentModelTest(TestCase):
         self.assertEqual(self.comment.author.username, "testcommenter")
         self.assertIsInstance(self.comment, Comment)
 
+
 class PostCreateViewTest(TestCase):
     """
     Test case for the post creation view.
     """
+
     def setUp(self):
         """
         Sets up a test user and the route for testing.
@@ -89,38 +91,36 @@ class PostCreateViewTest(TestCase):
         logged_in = self.client.login(username="testuser", password="password")
         self.assertTrue(logged_in, "Login failed for testuser")
 
-        #tests the data that is being posted
+        # tests the data that is being posted
         data = {
             "content": "This is a test post content while logged in.",
         }
 
         response = self.client.post(self.url, data)
 
-        #tests if the response is redirected to the home page
-        self.assertEqual(response.status_code, 302) #succesful
+        # tests if the response is redirected to the home page
+        self.assertEqual(response.status_code, 302)  # succesful
         self.assertRedirects(response, reverse('posts:home'))
 
-        #tests if the post was created successfully
+        # tests if the post was created successfully
         self.assertTrue(Post.objects.filter(content="This is a test post content while logged in.").exists())
-
-
 
     def test_create_post_not_logged_in(self):
         """
         Test creating a post while not logged in.
         """
 
-        #tests the data that shouldnt be posted
+        # tests the data that shouldnt be posted
         data = {
             "content": "This is a test post content while not logged in.",
         }
 
         response = self.client.post(self.url, data)
 
-        #tests if the response is redirected to the login page
+        # tests if the response is redirected to the login page
         self.assertEqual(response.status_code, 302)
 
-        #tests that the post was not created
+        # tests that the post was not created
         self.assertFalse(Post.objects.filter(content="This should not be posted.").exists())
 
     def test_create_post_missing_data(self):
@@ -129,18 +129,20 @@ class PostCreateViewTest(TestCase):
         """
         self.client.login(username="testuser", password="password")
 
-        #tests missing data
-        data = { "content": ""}
+        # tests missing data
+        data = {"content": ""}
 
         response = self.client.post(self.url, data)
 
-        #tests if the response is a bad request
+        # tests if the response is a bad request
         self.assertEqual(response.status_code, 400)
+
 
 class CommentCreateViewTest(TestCase):
     """
     Test case for the comment creation view.
     """
+
     def setUp(self):
         """
         Sets up test users, a post, and the route for testing.
@@ -166,7 +168,7 @@ class CommentCreateViewTest(TestCase):
         self.assertTrue(logged_in, "Login failed for comment author")
 
         # Create comment data
-        data = {"content": "This is a test comment.",}
+        data = {"content": "This is a test comment.", }
         response = self.client.post(self.url, data)
 
         # Tests if the response is redirected to the home page
@@ -199,10 +201,12 @@ class CommentCreateViewTest(TestCase):
         self.assertContains(response, "Test comment content")
         self.assertEqual(response.status_code, 200)
 
+
 class PostDeleteViewTest(TestCase):
     """
     Test case for the post deletion view.
     """
+
     def setUp(self):
         """
         Sets up a super user and regular user and post object for testing.
@@ -218,7 +222,7 @@ class PostDeleteViewTest(TestCase):
         self.client.login(username="superuser", password="password123")
         response = self.client.post(f'/posts/{self.post.id}/delete/')
 
-        self.assertEqual(response.status_code, 302) #redirect
+        self.assertEqual(response.status_code, 302)  # redirect
         self.assertFalse(Post.objects.filter(id=self.post.id).exists())
 
     def test_delete_post_not_superuser(self):
@@ -227,7 +231,7 @@ class PostDeleteViewTest(TestCase):
         """
         self.client.login(username="testuser", password="password123")
         response = self.client.post(f'/posts/{self.post.id}/delete/')
-        self.assertEqual(response.status_code, 403) #forbidden
+        self.assertEqual(response.status_code, 403)  # forbidden
         self.assertTrue(Post.objects.filter(id=self.post.id).exists())
 
     def test_delete_post_delete_related_comments(self):
@@ -237,4 +241,4 @@ class PostDeleteViewTest(TestCase):
         self.client.login(username="superuser", password="password123")
         Comment.objects.create(content="Test comment", author=self.superuser, post=self.post)
         self.client.post(f'/posts/{self.post.id}/delete/')
-        self.assertFalse(Comment.objects.filter(post=self.post).exists()) #checks if the comment was deleted
+        self.assertFalse(Comment.objects.filter(post=self.post).exists())  # checks if the comment was deleted

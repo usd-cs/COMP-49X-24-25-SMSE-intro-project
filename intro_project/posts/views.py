@@ -3,21 +3,21 @@ Views File for handling post features in the post app.
 """
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseForbidden
-from django.urls import reverse
-from django.views import generic
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Post, Comment
+
 
 def home(request):
     """
     Displays the home page with all the posts and comments. If a useris logged in, they can add posts and comments.
     """
     posts = Post.objects.all()
-    #output = "\n".join([f"{post.title}: {post.content} : {post.author} : {post.created_at}" for post in posts])
+    # output = "\n".join([f"{post.title}: {post.content} : {post.author} : {post.created_at}" for post in posts])
     print(posts)
-    return render (request, "posts/home.html", {"posts": posts})
-    #return HttpResponse(output, content_type="text/plain")
+    return render(request, "posts/home.html", {"posts": posts})
+    # return HttpResponse(output, content_type="text/plain")
+
 
 @login_required
 def create_post(request):
@@ -27,7 +27,7 @@ def create_post(request):
     Returns: JsonResponse: The JSON response shows either success or failure
     """
     if not request.user.is_authenticated:
-        return JsonResponse({"error": "Login is required."}, status=302) #redirects to login page by default
+        return JsonResponse({"error": "Login is required."}, status=302)  # redirects to login page by default
 
     if request.method == 'POST':
         content = request.POST.get('content', '').strip()
@@ -41,6 +41,7 @@ def create_post(request):
             author=request.user
         )
     return redirect('posts:home')
+
 
 @login_required
 def create_comment(request, post_id):
@@ -56,6 +57,7 @@ def create_comment(request, post_id):
         )
     return redirect('posts:home')
 
+
 @login_required
 def delete_post(request, post_id):
     """
@@ -68,6 +70,7 @@ def delete_post(request, post_id):
     post.delete()
     return redirect('posts:home')
 
+
 @login_required
 def delete_comment(request, comment_id):
     """
@@ -78,4 +81,3 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     comment.delete()
     return redirect('posts:home')
-

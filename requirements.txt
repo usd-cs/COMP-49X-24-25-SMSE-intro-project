@@ -11,3 +11,4 @@ psycopg2
 Django
 sqlparse
 flake8
+autopep8
