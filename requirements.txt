@@ -10,3 +10,4 @@ zipp
 psycopg2
 Django
 sqlparse
+flake8
