@@ -42,8 +42,9 @@ jobs:
 
     - name: Run Flake8 Linting
       run: |
+        cd intro_project
         flake8 .
-      # Optionally include a configuration file (if `.flake8` exists in the root)
+
 
     - name: Run Migrations
       env:
