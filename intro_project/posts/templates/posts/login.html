@@ -9,16 +9,20 @@
 </head>
 
 <body>
-    <h1 class="text-primary">SMSE Web Forum</h1>
-    <form method="POST" action="{% url 'login' %}">
+    <h1 class="text-primary text-center" style="margin-top: 70px;">SMSE Web Forum</h1>
+    <h3 class="text-dark text-center" style="margin-top: 80px;">Log in to your account</h3>
+    <form class="d-flex flex-column align-items-center" method="POST" action="{% url 'login' %}">
         {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" required><br><br>
+        <div class="mt-4" style="width: 50%;">
+            <label class="text-start w-100" for="username">Username</label><br>
+            <input class="form-control" type="text" name="username" required><br><br>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required><br><br>
+            <label class="text-start w-100" for="password">Password</label><br>
+            <input class="form-control" type="password" name="password" required><br><br>
 
-        <button type="submit">Login</button>
+            <button class="btn btn-primary text-center form-control" type="submit">Sign in</button>
+            <a class="nav-link text-primary text-center mt-3" href="{% url 'posts:home' %}">View as guest</a>
+        </div>
     </form>
 </body>
 </html>
