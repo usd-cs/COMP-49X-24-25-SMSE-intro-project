@@ -32,8 +32,8 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <textarea class="form-control" name="content" rows="3" placeholder="Post something here!!!" required></textarea>
+                    <button type="submit" class="btn btn-primary mt-2 float-end">Post</button>
                 </div>
-                <button type="submit" class="btn btn-primary mt-2">Post</button>
             </form>
         </div>
     </div>
@@ -64,6 +64,17 @@
             <div class="card-body">
                 <p class="card-text">{{ post.content }}</p>
             </div>
+            {% if user.is_authenticated %}
+            <div class="card-footer">
+                <form method="POST" action="{% url 'posts:create_comment' post.id %}">
+                    {% csrf_token %}
+                    <div class="form-group d-flex flex-row">
+                        <input class="form-control" name="content" placeholder="Add a comment" required></input>
+                        <button type="submit" class="btn btn-primary float-end ms-3">Comment</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
             <div class="card-footer">
                 <h5>Comments</h5>
                 {% if post.comments.all %}
